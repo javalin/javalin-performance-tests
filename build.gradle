@@ -7,9 +7,16 @@ plugins {
     id 'application'
 }
 
+apply plugin: 'me.champeau.gradle.jmh'
+
 ext{
     javalinVersion = '3.7.0'
     jmhVersion='1.21'
+    okhttpVersion='3.6.0'
+    sl4jVersion='1.7.24'
+    logbackVersion= '1.2.1'
+    httpcomponentVersion='4.5.3'
+    httpclientVersion='4.5.1'
 }
 
 repositories {
@@ -33,11 +40,34 @@ dependencies {
 
     // Javalin
     compile "io.javalin:javalin:$javalinVersion"
+
+    //JMH
     compile "org.openjdk.jmh:jmh-core:$jmhVersion"
     compile "org.openjdk.jmh:jmh-generator-annprocess:$jmhVersion"
+
+    //sl4f
+    implementation "org.slf4j:slf4j-api:$sl4jVersion"
+    implementation "org.slf4j:log4j-over-slf4j:$sl4jVersion"
+
+    //okhttp3
+    implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
+
+    //logback
+    implementation "ch.qos.logback:logback-classic:$logbackVersion"
+
+    //httpcomponents
+    //implementation "org.apache.httpcomponent:httpclient:$httpcomponentVersion"
+    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: "$httpclientVersion"
+}
+
+jmh{
+    include = 'javalin\\.performance\\.Benchmarks.*'
+    humanOutputFile = null
+    warmupIterations = 1
+    iterations = 1
 }
 
 application {
     // Define the main class for the application.
-    mainClassName = 'javalin.performance.AppKt'
-}
+    mainClassName = 'javalin.performance.BenchmarksKt'
+}    
