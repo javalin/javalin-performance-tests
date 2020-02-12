@@ -8,13 +8,14 @@ plugins {
 }
 
 ext{
-    javalinVersion = '3.7.0'
+    javalinVersion = project.hasProperty('javalinVersion') ? project.getProperty('javalinVersion') : '3.0.0'
     jmhVersion='1.21'
     okhttpVersion='3.6.0'
     sl4jVersion='1.7.24'
     logbackVersion= '1.2.1'
     httpcomponentVersion='4.5.3'
     httpclientVersion='4.5.1'
+    externalDir = 'src/main/external/'
 }
 
 repositories {
@@ -54,11 +55,15 @@ dependencies {
     implementation "ch.qos.logback:logback-classic:$logbackVersion"
 
     //httpcomponents
-    //implementation "org.apache.httpcomponent:httpclient:$httpcomponentVersion"
     compile group: 'org.apache.httpcomponents', name: 'httpclient', version: "$httpclientVersion"
 }
 
+sourceSets{
+    main.kotlin.srcDirs += "${externalDir}${javalinVersion}"
+}
+
 application {
+    print "javalin version : ${javalinVersion}"
     // Define the main class for the application.
-    mainClassName = 'javalin.performance.BenchmarksKt'
+    mainClassName = 'javalin.performance.JavalinKt'
 }    
