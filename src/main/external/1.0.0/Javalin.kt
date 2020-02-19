@@ -10,6 +10,7 @@ open class JavalinBenchmark : HttpBenchmarkBase() {
     var app :Javalin? = null
     override fun startServer(port: Int) {
        app =  Javalin.start(port)
+        app!!.get(helloPath) { ctx -> ctx.result(helloResult) }
     }
 
     override fun stopServer() {
