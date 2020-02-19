@@ -1,23 +1,20 @@
 package javalin.performance
 
-import org.openjdk.jmh.annotations.*
-import org.openjdk.jmh.runner.*
-import org.openjdk.jmh.runner.options.*
 import java.lang.reflect.*
 import java.util.concurrent.*
 import kotlin.concurrent.*
+import org.openjdk.jmh.annotations.*
+import org.openjdk.jmh.runner.*
+import org.openjdk.jmh.runner.options.*
 
 val numberOfOperations = 10000
-val jmhOptions = OptionsBuilder()
-        .mode(Mode.Throughput)
-        .timeUnit(TimeUnit.MILLISECONDS)
-        .forks(1)
 
 class BenchmarkSettings {
     var threads = 32
     val profilers = mutableListOf<String>()
     var iterations = 5
     var iterationTime = 10000L
+    var resultName = "result.csv"
     val benchmarks = mutableListOf<BenchmarkDescriptor>()
 
     fun profile(name: String) {
@@ -42,7 +39,6 @@ fun benchmark(args: Array<String>, configure: BenchmarkSettings.() -> Unit) {
         "profile" -> runProfiler(options)
         null, "benchmark" -> runJMH(options)
     }
-
 }
 
 fun runDaemon(settings: BenchmarkSettings) {
@@ -118,6 +114,11 @@ private fun Any?.executeBenchmarks(benchmarks: List<Method>, iterations: Int) {
 }
 
 fun runJMH(settings: BenchmarkSettings) {
+    val jmhOptions = OptionsBuilder()
+        .mode(Mode.Throughput)
+        .timeUnit(TimeUnit.MILLISECONDS)
+        .result(settings.resultName+".csv")
+        .forks(1)
     val options = jmhOptions.apply {
         settings.profilers.forEach {
             addProfiler(it)

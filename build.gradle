@@ -64,6 +64,7 @@ sourceSets{
 
 application {
     print "javalin version : ${javalinVersion}"
+    applicationDefaultJvmArgs = ["-Dversion=${javalinVersion}"]
     // Define the main class for the application.
     mainClassName = 'javalin.performance.JavalinKt'
 }    

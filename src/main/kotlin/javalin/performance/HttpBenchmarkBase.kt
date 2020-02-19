@@ -10,6 +10,8 @@ abstract class HttpBenchmarkBase {
     private val httpClient = OkBenchmarkClient()
 
     private val port = 7000
+    public val helloPath = "/hello"
+    public val helloResult = "Hello World"
 
     abstract fun startServer(port: Int)
     abstract fun stopServer()
@@ -45,7 +47,7 @@ abstract class HttpBenchmarkBase {
 
     @Benchmark
     fun hello() {
-        load("http://localhost:$port")
+        load("http://localhost:$port/hello")
     }
 }
 
