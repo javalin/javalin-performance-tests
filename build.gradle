@@ -56,6 +56,9 @@ dependencies {
 
     //httpcomponents
     compile group: 'org.apache.httpcomponents', name: 'httpclient', version: "$httpclientVersion"
+
+    // https://mvnrepository.com/artifact/de.siegmar/fastcsv
+    compile group: 'de.siegmar', name: 'fastcsv', version: '1.0.3'
 }
 
 sourceSets{
@@ -64,7 +67,7 @@ sourceSets{
 
 application {
     print "javalin version : ${javalinVersion}"
-    applicationDefaultJvmArgs = ["-Dversion=${javalinVersion}"]
+    applicationDefaultJvmArgs = ["-Dversion=${javalinVersion}","-Dmode=compareReport","-Dbaseline=1.0.0","-Dtarget=3.0.0"]
     // Define the main class for the application.
     mainClassName = 'javalin.performance.JavalinKt'
 }    
