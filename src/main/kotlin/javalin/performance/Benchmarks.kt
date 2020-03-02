@@ -2,8 +2,10 @@ package javalin.performance
 
 import de.vandermeer.asciitable.AsciiTable 
 import de.siegmar.fastcsv.reader.CsvReader
+import kotlin.math.round
 import java.io.File
 import java.nio.charset.StandardCharsets
+import de.vandermeer.skb.interfaces.transformers.textformat.TextAlignment
 
 object Benchmarks {
 
@@ -11,10 +13,9 @@ object Benchmarks {
         val mode = System.getProperty("mode")
         when (mode) {
             "benchmark" -> {
-                val version = System.getProperty("version")
                 runBenchmark(args)
             }
-            "compareReport" -> {
+            "compare" -> {
                 val baseline = System.getProperty("baseline")
                 val target = System.getProperty("target")
                 compare(baseline, target)
@@ -53,7 +54,8 @@ object Benchmarks {
         csvReader.setContainsHeader(true)
         val baselineRead = csvReader.read(baselineCsv, StandardCharsets.UTF_8)
         val targetRead = csvReader.read(targetCsv, StandardCharsets.UTF_8)
-        at.addRow("methodNameLabel", "increment score");
+        at.addRow(methodNameLabel,"$baseline score","$target score", "$target increment score");
+        at.setTextAlignment(TextAlignment.CENTER)
         at.addRule()
 
         for (i in 0 until baselineRead.rows.size) {
@@ -61,9 +63,14 @@ object Benchmarks {
             var targetBenchmark = targetRead.getRow(i)
             if (baselineBenchmark.getField(methodNameLabel)
                 == targetBenchmark.getField(methodNameLabel)) {
-                var baselineScore = baselineRead.getRow(i).getField(scoreLabel).toDouble()
-                var targetScore = targetRead.getRow(i).getField(scoreLabel).toDouble()
-                at.addRow(baselineRead.getRow(i).getField(methodNameLabel),"%.3f".format(((targetScore / baselineScore) - 1)*100) + "%");
+                var baselineScore = round(baselineRead.getRow(i).getField(scoreLabel).toDouble()*100)/100
+                var targetScore = round(targetRead.getRow(i).getField(scoreLabel).toDouble()*100)/100
+                at.addRow(
+                    baselineRead.getRow(i).getField(methodNameLabel)
+                    ,baselineScore
+                    ,targetScore
+                    ,"%.3f".format(((targetScore / baselineScore) - 1)*100) + "%");
+                at.setTextAlignment(TextAlignment.CENTER)
                 at.addRule()
             }
         }
