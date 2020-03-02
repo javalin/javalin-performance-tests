@@ -55,10 +55,12 @@ dependencies {
     implementation "ch.qos.logback:logback-classic:$logbackVersion"
 
     //httpcomponents
-    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: "$httpclientVersion"
+    implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: "$httpclientVersion"
 
     // https://mvnrepository.com/artifact/de.siegmar/fastcsv
-    compile group: 'de.siegmar', name: 'fastcsv', version: '1.0.3'
+    implementation group: 'de.siegmar', name: 'fastcsv', version: '1.0.3'
+
+    implementation 'de.vandermeer:asciitable:0.3.2'
 }
 
 sourceSets{
@@ -66,8 +68,11 @@ sourceSets{
 }
 
 application {
-    print "javalin version : ${javalinVersion}"
-    applicationDefaultJvmArgs = ["-Dversion=${javalinVersion}","-Dmode=compareReport","-Dbaseline=1.0.0","-Dtarget=3.0.0"]
+    if("${mode}" == "benchmark"){
+        applicationDefaultJvmArgs = ["-Dversion=${javalinVersion}","-Dmode=${mode}"]
+    }else if("${mode}" == "compare"){
+        applicationDefaultJvmArgs = ["-Dmode=${mode}","-Dbaseline=${baseline}","-Dtarget=${target}"]
+    }
     // Define the main class for the application.
     mainClassName = 'javalin.performance.JavalinKt'
 }    

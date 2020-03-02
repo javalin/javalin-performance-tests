@@ -1,7 +1,7 @@
 package javalin.performance
 
+import de.vandermeer.asciitable.AsciiTable 
 import de.siegmar.fastcsv.reader.CsvReader
-import de.siegmar.fastcsv.reader.CsvRow
 import java.io.File
 import java.nio.charset.StandardCharsets
 
@@ -43,20 +43,31 @@ object Benchmarks {
 
     // compare baseline version with targer version
     fun compare(baseline: String, target: String) {
+        val at = AsciiTable()
+        at.addRule()
+        val methodNameLabel = "Benchmark"
+        val scoreLabel = "Score"
         val baselineCsv = File("$baseline.csv")
         val targetCsv = File("$target.csv")
         val csvReader = CsvReader()
+        csvReader.setContainsHeader(true)
         val baselineRead = csvReader.read(baselineCsv, StandardCharsets.UTF_8)
         val targetRead = csvReader.read(targetCsv, StandardCharsets.UTF_8)
-        for (row :CsvRow in baselineRead.getRows()) {
-            System.out.println("baseline read line: " + row);
-            System.out.println("First column of line: " + row.getField(0));
-        }
+        at.addRow("methodNameLabel", "increment score");
+        at.addRule()
 
-        for (row :CsvRow in targetRead.getRows()) {
-            System.out.println("target read line: " + row);
-            System.out.println("First column of line: " + row.getField(0));
+        for (i in 0 until baselineRead.rows.size) {
+            var baselineBenchmark = baselineRead.getRow(i)
+            var targetBenchmark = targetRead.getRow(i)
+            if (baselineBenchmark.getField(methodNameLabel)
+                == targetBenchmark.getField(methodNameLabel)) {
+                var baselineScore = baselineRead.getRow(i).getField(scoreLabel).toDouble()
+                var targetScore = targetRead.getRow(i).getField(scoreLabel).toDouble()
+                at.addRow(baselineRead.getRow(i).getField(methodNameLabel),"%.3f".format(((targetScore / baselineScore) - 1)*100) + "%");
+                at.addRule()
+            }
         }
+        println(at.render())
     }
 
     private fun BenchmarkSettings.setup() {
