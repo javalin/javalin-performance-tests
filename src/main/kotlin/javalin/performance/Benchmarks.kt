@@ -1,12 +1,5 @@
 package javalin.performance
 
-import de.vandermeer.asciitable.AsciiTable 
-import de.siegmar.fastcsv.reader.CsvReader
-import kotlin.math.round
-import java.io.File
-import java.nio.charset.StandardCharsets
-import de.vandermeer.skb.interfaces.transformers.textformat.TextAlignment
-
 object Benchmarks {
 
     fun run(args: Array<String>) {
@@ -21,11 +14,15 @@ object Benchmarks {
         val itTime = System.getProperty("iterationTime").toLong()
 
         benchmark(args) {
-            if(!profileName.equals(""))
+            if (!profileName.equals(""))
                 profile(profileName)
-            iterations = its 
-            iterationTime = itTime 
-            resultName = "$version-$profileName"
+            iterations = its
+            iterationTime = itTime
+            resultName =  
+             if(profileName.isBlank())
+              "$version"
+             else
+              "$version-$profileName"
             setup()
         }
     }

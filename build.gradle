@@ -84,9 +84,9 @@ task benchmark(type:JavaExec){
 }
 
 task compare(type:JavaExec){
-    main = 'javalin.performance.BenchmarkCompare'
+    main = 'javalin.performance.BenchmarkCompareKt'
     classpath = sourceSets.main.runtimeClasspath
-    // jvmArgs = 
-    //     ["-Dmode=${mode}","-DprofileName=${profileName}",
-    //     "-Dbaseline=${baseline}","-Dtarget=${target}"]
+    jvmArgs = 
+        ["-DprofileName=${profileName}",
+        "-Dbaseline=${baseline}","-Dtarget=${target}"]
 }

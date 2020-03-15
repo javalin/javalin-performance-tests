@@ -7,7 +7,11 @@ import java.io.File
 import java.nio.charset.StandardCharsets
 import kotlin.math.round
 
-object enchmarkCompare {
+fun main(args: Array<String>) {
+    BenchmarkCompare.run(args)
+}
+
+object BenchmarkCompare {
 
     fun run(args: Array<String>) {
         val baseline = System.getProperty("baseline")
