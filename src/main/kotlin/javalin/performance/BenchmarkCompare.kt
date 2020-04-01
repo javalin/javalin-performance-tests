@@ -15,7 +15,7 @@ object BenchmarkCompare {
 
     fun run(args: Array<String>) {
         val baseline = System.getProperty("baseline")
-        val target = System.getProperty("target")
+        val target = System.getProperty("javalinVersion")
         compare(baseline, target)
     }
 

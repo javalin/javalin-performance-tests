@@ -19,6 +19,7 @@ ext{
 
 ext{
     javalinVersion = project.hasProperty('javalinVersion') ? project.getProperty('javalinVersion') : '3.0.0'
+    baseline = project.hasProperty('baseline') ? project.getProperty('baseline') : '1.0.0'
     profileName = project.hasProperty('profileName') ? project.getProperty('profileName') : ''
     iterations = project.hasProperty('iterations') ? project.getProperty('iterations') : '20'
     iterationTime = project.hasProperty('iterationTime') ? project.getProperty('iterationTime') : '10000'
@@ -88,5 +89,5 @@ task compare(type:JavaExec){
     classpath = sourceSets.main.runtimeClasspath
     jvmArgs = 
         ["-DprofileName=${profileName}",
-        "-Dbaseline=${baseline}","-Dtarget=${target}"]
+        "-Dbaseline=${baseline}","-DjavalinVersion=${javalinVersion}"]
 }
