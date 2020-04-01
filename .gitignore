@@ -16,4 +16,4 @@ gradle-app.setting
 tags
 
 # JMH result files
-*.csv
+results/*.csv

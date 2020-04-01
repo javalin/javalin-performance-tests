@@ -6,8 +6,10 @@ import kotlin.concurrent.*
 import org.openjdk.jmh.annotations.*
 import org.openjdk.jmh.runner.*
 import org.openjdk.jmh.runner.options.*
+import java.io.File
 
 val numberOfOperations = 10000
+val RESULT_DIR = "results"
 
 class BenchmarkSettings {
     var threads = 32
@@ -114,10 +116,14 @@ private fun Any?.executeBenchmarks(benchmarks: List<Method>, iterations: Int) {
 }
 
 fun runJMH(settings: BenchmarkSettings) {
+    val directory = File(RESULT_DIR);
+    if (! directory.exists()){
+        directory.mkdir();
+    }
     val jmhOptions = OptionsBuilder()
         .mode(Mode.Throughput)
         .timeUnit(TimeUnit.MILLISECONDS)
-        .result(settings.resultName+".csv")
+        .result("$RESULT_DIR/${settings.resultName}.csv")
         .forks(1)
     val options = jmhOptions.apply {
         settings.profilers.forEach {

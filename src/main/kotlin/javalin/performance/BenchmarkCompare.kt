@@ -25,8 +25,8 @@ object BenchmarkCompare {
         val methodNameLabel = "Benchmark"
         val scoreLabel = "Score"
         val unitLabel = "Unit"
-        val baselineCsv = File("$baseline.csv")
-        val targetCsv = File("$target.csv")
+        val baselineCsv = File("$RESULT_DIR/$baseline.csv")
+        val targetCsv = File("$RESULT_DIR/$target.csv")
         val csvReader = CsvReader()
         csvReader.setContainsHeader(true)
 
