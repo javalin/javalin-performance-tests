@@ -1,12 +1,16 @@
 plugins {
     // Apply the Kotlin JVM plugin to add support for Kotlin.
-    id 'org.jetbrains.kotlin.jvm' version '1.3.61'
+    id 'org.jetbrains.kotlin.jvm' version '1.7.10'
     // AnnotationProcessor for kotlin
-    id 'org.jetbrains.kotlin.kapt' version '1.3.61'
+    id 'org.jetbrains.kotlin.kapt' version '1.7.10'
 }
-
+kotlin {
+    jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of("11"))
+    }
+}
 ext{
-    jmhVersion='1.21'
+    jmhVersion='1.35'
     okhttpVersion='3.6.0'
     sl4jVersion='1.7.24'
     logbackVersion= '1.2.1'
@@ -27,9 +31,7 @@ ext{
 }
 
 repositories {
-    // Use jcenter for resolving dependencies.
-    // You can declare any Maven/Ivy/file repository here.
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
@@ -46,7 +48,7 @@ dependencies {
     testImplementation 'org.jetbrains.kotlin:kotlin-test-junit'
 
     // Javalin
-    compile "io.javalin:javalin:$javalinVersion"
+    implementation "io.javalin:javalin:$javalinVersion"
 
     //JMH
     implementation "org.openjdk.jmh:jmh-core:$jmhVersion"
@@ -76,7 +78,7 @@ sourceSets{
 }
 
 task benchmark(type:JavaExec){
-    main = 'javalin.performance.JavalinKt'
+    mainClass = 'javalin.performance.JavalinKt'
     classpath = sourceSets.main.runtimeClasspath
     jvmArgs = 
          ["-Dversion=${javalinVersion}","-Dmode=${mode}",
@@ -85,7 +87,7 @@ task benchmark(type:JavaExec){
 }
 
 task compare(type:JavaExec){
-    main = 'javalin.performance.BenchmarkCompareKt'
+    mainClass = 'javalin.performance.BenchmarkCompareKt'
     classpath = sourceSets.main.runtimeClasspath
     jvmArgs = 
         ["-DprofileName=${profileName}",
