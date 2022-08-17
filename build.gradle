@@ -22,7 +22,7 @@ ext{
 }
 
 ext{
-    javalinVersion = project.hasProperty('javalinVersion') ? project.getProperty('javalinVersion') : '3.0.0'
+    javalinVersion = project.hasProperty('javalinVersion') ? project.getProperty('javalinVersion') : '4.0.0'
     baseline = project.hasProperty('baseline') ? project.getProperty('baseline') : '1.0.0'
     profileName = project.hasProperty('profileName') ? project.getProperty('profileName') : ''
     iterations = project.hasProperty('iterations') ? project.getProperty('iterations') : '20'
@@ -32,6 +32,9 @@ ext{
 
 repositories {
     mavenCentral()
+    maven {
+        url "https://maven.reposilite.com/snapshots"
+    }
 }
 
 dependencies {
