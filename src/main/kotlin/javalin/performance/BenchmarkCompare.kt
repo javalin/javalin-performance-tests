@@ -42,11 +42,17 @@ object BenchmarkCompare {
             var baselineBenchmark = baselineRead.getRow(i)
             var targetBenchmark = targetRead.getRow(i)
             if (baselineBenchmark.getField(methodNameLabel)
-                == targetBenchmark.getField(methodNameLabel)) {
-                var baselineScore = round(baselineRead.getRow(i).getField(scoreLabel).toDouble()*100) / 100
-                var targetScore = round(targetRead.getRow(i).getField(scoreLabel).toDouble()*100) / 100
+                == targetBenchmark.getField(methodNameLabel)
+            ) {
+                var baselineScore = round(baselineRead.getRow(i).getField(scoreLabel).toDouble() * 100) / 100
+                var targetScore = round(targetRead.getRow(i).getField(scoreLabel).toDouble() * 100) / 100
                 at.addRow(
-                    baselineRead.getRow(i).getField(methodNameLabel), baselineScore, targetScore, baselineRead.getRow(i).getField(unitLabel), "%.3f".format(((targetScore / baselineScore) - 1)*100) + "%")
+                    baselineRead.getRow(i).getField(methodNameLabel),
+                    baselineScore,
+                    targetScore,
+                    baselineRead.getRow(i).getField(unitLabel),
+                    "%.3f".format(((targetScore / baselineScore) - 1) * 100) + "%"
+                )
                 at.setTextAlignment(TextAlignment.CENTER)
                 at.addRule()
             }
