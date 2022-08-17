@@ -23,6 +23,10 @@ ext{
 
 ext{
     javalinVersion = project.hasProperty('javalinVersion') ? project.getProperty('javalinVersion') : '4.0.0'
+    if (javalinVersion == "3.2.0") {
+        project.logger.error("Can't benchmark Javalin 3.2.0. See https://github.com/javalin/javalin/issues/674")
+        return 1
+    }
     baseline = project.hasProperty('baseline') ? project.getProperty('baseline') : '1.0.0'
     profileName = project.hasProperty('profileName') ? project.getProperty('profileName') : ''
     iterations = project.hasProperty('iterations') ? project.getProperty('iterations') : '20'
