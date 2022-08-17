@@ -18,8 +18,6 @@ abstract class HttpBenchmarkBase {
 
     @Setup
     fun configureServer() {
-        val root = LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME) as ch.qos.logback.classic.Logger
-        root.level = Level.ERROR
         startServer(port)
     }
 
