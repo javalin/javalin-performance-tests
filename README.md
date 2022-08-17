@@ -7,7 +7,7 @@ JMH performance tests for different Javalin versions
   
   Run with default parameters
   ```sh
-  ./gradlew -PjavalinVersion=3.0.0 run
+  ./gradlew -PjavalinVersion=3.0.0 benchmark
   ```
   Or
   ```sh
