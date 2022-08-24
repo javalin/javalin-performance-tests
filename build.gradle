@@ -36,6 +36,7 @@ ext{
 
 repositories {
     mavenCentral()
+    mavenLocal()
     maven {
         url "https://maven.reposilite.com/snapshots"
     }
@@ -87,7 +88,7 @@ sourceSets{
 task benchmark(type:JavaExec){
     mainClass = 'javalin.performance.JavalinKt'
     classpath = sourceSets.main.runtimeClasspath
-    jvmArgs = 
+    jvmArgs =
          ["-Dversion=${javalinVersion}","-Dmode=${mode}",
          "-DprofileName=${profileName}","-Diterations=${iterations}",
          "-DiterationTime=${iterationTime}"]
@@ -96,7 +97,7 @@ task benchmark(type:JavaExec){
 task compare(type:JavaExec){
     mainClass = 'javalin.performance.BenchmarkCompareKt'
     classpath = sourceSets.main.runtimeClasspath
-    jvmArgs = 
+    jvmArgs =
         ["-DprofileName=${profileName}",
         "-Dbaseline=${baseline}","-DjavalinVersion=${javalinVersion}"]
 }
