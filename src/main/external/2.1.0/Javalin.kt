@@ -10,7 +10,7 @@ open class JavalinBenchmark : HttpBenchmarkBase() {
     val app = Javalin.create();
     override fun startServer(port: Int) {
         app.start(port)
-        app.get(helloPath) { ctx -> ctx.result(helloResult) }
+        app.attachEndpoints()
     }
 
     override fun stopServer() {

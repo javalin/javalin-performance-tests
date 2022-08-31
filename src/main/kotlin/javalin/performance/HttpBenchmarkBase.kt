@@ -1,17 +1,31 @@
 package javalin.performance
 
-import ch.qos.logback.classic.Level
+import io.javalin.Javalin
 import org.openjdk.jmh.annotations.*
-import org.slf4j.*
-import org.slf4j.Logger
+import java.lang.IllegalStateException
 
 @State(Scope.Benchmark)
 abstract class HttpBenchmarkBase {
     private val httpClient = OkBenchmarkClient()
 
     private val port = 7000
-    public val helloPath = "/hello"
-    public val helloResult = "Hello World"
+    val origin = "http://localhost:$port"
+
+    fun Javalin.attachEndpoints() {
+        // Hello World
+        this.get("/hello") { it.result("Hello World") }
+
+        // lifecycle
+        this.before("/lifecycle") { it.result("A") }
+        this.get("/lifecycle") { it.result("B") }
+        this.after("/lifecycle") { it.result("C") }
+
+        // exceptions+error
+        this.get("/exception") { throw IllegalStateException() }
+        this.exception(Exception::class.java) { e, ctx -> ctx.status(500) }
+        this.error(500) { it.result("Error") }
+
+    }
 
     abstract fun startServer(port: Int)
     abstract fun stopServer()
@@ -36,8 +50,8 @@ abstract class HttpBenchmarkBase {
         httpClient.shutdown()
     }
 
-    private fun load(url: String) {
-        httpClient.load(url).use {
+    private fun load(path: String) {
+        httpClient.load("${origin}${path}").use {
             val buf = ByteArray(8192)
             while (it.read(buf) != -1);
         }
@@ -45,7 +59,9 @@ abstract class HttpBenchmarkBase {
 
     @Benchmark
     fun hello() {
-        load("http://localhost:$port/hello")
+        load("/hello")
+        load("/lifecycle")
+        load("/exception")
     }
 }
 
